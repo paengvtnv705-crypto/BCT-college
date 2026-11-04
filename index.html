@@ -139,7 +139,7 @@ function filtered(){const q=S.q.toLowerCase();return S.students.filter(s=>(!S.fy
 /* ---------- ໜ້າຫຼັກ ---------- */
 function renderHome(m){const f=S.students.filter(s=>s.gender==="ຍິງ").length;
   m.innerHTML=`<div class="card"><h2>ຍິນດີຕ້ອນຮັບ 🌷</h2><div class="stat"><div><b data-n="${S.years.length}">0</b>ສົກຮຽນ</div><div><b data-n="${S.students.length}">0</b>ນັກສຶກສາທັງໝົດ</div><div><b data-n="${f}">0</b>ຍິງ</div><div><b data-n="${S.students.length-f}">0</b>ຊາຍ</div></div>
-  <p class="note">ທຸກຄົນເບິ່ງຂໍ້ມູນໄດ້ ແຕ່ການເພີ່ມ / ແກ້ໄຂ / ລົບ ຕ້ອງເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ.</p></div>`}
+  <p class="note">ທຸກຄົນເບິ່ງຂໍ້ມູນ ແລະ ເພີ່ມນັກສຶກສາໄດ້ ໂດຍບໍ່ຕ້ອງເຂົ້າສູ່ລະບົບ ແຕ່ການແກ້ໄຂ / ລົບ ຕ້ອງເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ.</p></div>`}
 
 /* ---------- ສົກຮຽນ ---------- */
 function renderYears(m){
@@ -155,18 +155,18 @@ function renderYears(m){
 /* ---------- ນັກສຶກສາ ---------- */
 function renderStudents(m){
   m.innerHTML=`<div class="card"><h2>ປະຫວັດນັກສຶກສາ</h2><div class="bar"><div><label>ສົກຮຽນ</label>${yearSel("fy",S.fy,true)}</div>
-  <div style="flex:1"><label>ຄົ້ນຫາ</label><input id="fq" value="${esc(S.q)}" placeholder="ຊື່, ເບີໂທ, ແຂວງ..."></div>${S.admin?'<button class="btn" id="add">+ ເພີ່ມນັກສຶກສາ</button>':""}</div><div class="tw" id="tb"></div></div>`;
+  <div style="flex:1"><label>ຄົ້ນຫາ</label><input id="fq" value="${esc(S.q)}" placeholder="ຊື່, ເບີໂທ, ແຂວງ..."></div><button class="btn" id="add">+ ເພີ່ມນັກສຶກສາ</button></div><div class="tw" id="tb"></div></div>`;
   const draw=()=>{$("#tb").innerHTML=table(true);stagger();
     $("#tb").querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>studentForm(b.dataset.e));
     $("#tb").querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{if(confirm("ລົບນັກສຶກສາຄົນນີ້?")&&await run(sb.from("students").delete().eq("id",b.dataset.d),"ລົບແລ້ວ"))load()})};
   $("#fy").onchange=e=>{S.fy=e.target.value;draw()};$("#fq").oninput=e=>{S.q=e.target.value;draw()};
-  if(S.admin)$("#add").onclick=()=>studentForm();draw();
+  $("#add").onclick=()=>studentForm();draw();
 }
 function table(act){const rows=filtered();
   return `<table><thead><tr><th>ລ/ດ</th><th>ຮູບ</th><th>ສົກຮຽນ</th><th>ຊື່-ນາມສະກຸນ (ລາວ)</th><th>Name (EN)</th><th>ເພດ</th><th>ວັນເກີດ (ລາວ)</th><th>Date of birth (EN)</th><th>ບ້ານ</th><th>ເມືອງ</th><th>ແຂວງ</th><th>ຈົບ ມ.7 ຈາກ</th><th>ເບີໂທ</th><th>ເບີພໍ່</th><th>ເບີແມ່</th><th>ເບີສຸກເສີນ</th>${act&&S.admin?"<th></th>":""}</tr></thead><tbody>
   ${rows.map((s,i)=>`<tr><td>${i+1}</td><td>${s.photo_url?`<img class="ph" src="${esc(s.photo_url)}">`:"—"}</td><td>${esc(yname(s.academic_year_id))}</td><td>${esc(nameLo(s))}</td><td>${esc(nameEn(s))}</td><td>${esc(s.gender)}</td><td>${esc(s.dob_lo)}</td><td>${esc(s.dob_en)}</td><td>${esc(s.birth_village)}</td><td>${esc(s.birth_district)}</td><td>${esc(s.birth_province)}</td><td>${esc(s.high_school)}</td><td>${esc(s.phone)}</td><td>${esc(s.phone_father)}</td><td>${esc(s.phone_mother)}</td><td>${esc(s.phone_emergency)}</td>${act&&S.admin?`<td><button class="btn sm alt" data-e="${s.id}">ແກ້ໄຂ</button> <button class="btn sm del" data-d="${s.id}">ລົບ</button></td>`:""}</tr>`).join("")||'<tr><td colspan="17">ບໍ່ພົບຂໍ້ມູນ</td></tr>'}</tbody></table>`}
 function studentForm(id){
-  if(!guard())return;if(!S.years.length)return alert("ກະລຸນາເພີ່ມສົກຮຽນກ່ອນ");
+  if(id&&!guard())return;if(!S.years.length)return alert("ກະລຸນາເພີ່ມສົກຮຽນກ່ອນ");
   const s=S.students.find(x=>String(x.id)===String(id))||{academic_year_id:S.fy||S.years[S.years.length-1].id,gender:"ຊາຍ"};
   let blob=null;
   const f=(k,l,t)=>`<div><label>${l}</label><input id="f_${k}" type="${t||"text"}" value="${esc(s[k])}"></div>`;
@@ -194,6 +194,7 @@ function studentForm(id){
       const up=await sb.storage.from(BUCKET).upload(path,blob,{contentType:"image/jpeg"});
       if(up.error){$("#le").textContent="ອັບໂຫຼດຮູບບໍ່ໄດ້: "+up.error.message;$("#sv").disabled=false;return}
       d.photo_url=sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl}
+    if(id&&!S.admin){$("#le").textContent="ຕ້ອງເຂົ້າສູ່ລະບົບຈຶ່ງແກ້ໄຂໄດ້";$("#sv").disabled=false;return}
     const ok=await run(id?sb.from("students").update(d).eq("id",id):sb.from("students").insert(d),"ບັນທຶກສຳເລັດ 🎉");
     $("#sv").disabled=false;if(ok){modal();load()}};
 }
