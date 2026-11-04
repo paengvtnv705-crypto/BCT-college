@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="lo">
+<head>
+<meta charset="utf-8">
+<title>ລະບົບບໍລິຫານວິທະຍາໄລ</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+Lao:wght@400;600;700&display=swap">
+<style>
+:root{--bg:#fff7fa;--card:#ffffff;--text:#4a2a38;--muted:#a07888;--pri:#f48fb1;--pri-d:#ec6a98;--soft:#fde8f0;--line:#f8d3e1;--danger:#e57373;--shadow:0 6px 20px rgba(244,143,177,.18)}
+*{box-sizing:border-box}
+html,body{margin:0;background:linear-gradient(160deg,#fff7fa,#ffeef5 60%,#fde4ef);color:var(--text);font-family:"Noto Sans Lao","Phetsarath OT",system-ui,sans-serif;font-size:15px;min-height:100%}
+header{position:sticky;top:0;z-index:5;background:linear-gradient(90deg,#f8bbd0,#f48fb1);color:#fff;display:flex;align-items:center;gap:10px;padding:12px 18px;flex-wrap:wrap;box-shadow:var(--shadow)}
+header h1{font-size:18px;margin:0;flex:1;text-shadow:0 1px 2px rgba(0,0,0,.12)}
+.layout{display:flex;min-height:calc(100vh - 56px);position:relative;z-index:1}
+nav{width:215px;background:rgba(255,255,255,.75);backdrop-filter:blur(6px);border-right:1px solid var(--line);padding:14px 10px;flex-shrink:0}
+nav button{display:block;width:100%;text-align:left;background:none;border:0;color:var(--text);padding:11px 14px;border-radius:12px;cursor:pointer;font:inherit;margin-bottom:5px;transition:.2s}
+nav button:hover{background:var(--soft);transform:translateX(4px)}
+nav button.on{background:linear-gradient(90deg,var(--pri),#f8bbd0);color:#fff;font-weight:600;box-shadow:var(--shadow)}
+main{flex:1;padding:20px;min-width:0}
+@media(max-width:720px){.layout{flex-direction:column}nav{width:100%;display:flex;overflow-x:auto;border-right:0;border-bottom:1px solid var(--line)}nav button{width:auto;white-space:nowrap}}
+.card{background:var(--card);border:1px solid var(--line);border-radius:18px;padding:18px;margin-bottom:18px;box-shadow:var(--shadow);animation:rise .5s both}
+@keyframes rise{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
+h2{margin:0 0 14px;color:var(--pri-d);font-size:19px}
+.btn{position:relative;overflow:hidden;background:var(--pri);color:#fff;border:0;border-radius:12px;padding:9px 16px;cursor:pointer;font:inherit;transition:.2s}
+.btn:hover{background:var(--pri-d);transform:translateY(-2px);box-shadow:var(--shadow)}
+.btn.alt{background:var(--soft);color:var(--text);border:1px solid var(--line)}.btn.alt:hover{background:var(--line)}
+.btn.del{background:var(--danger)}.btn.sm{padding:4px 10px;font-size:13px}
+header .btn{background:#fff;color:var(--pri-d)}
+.rip{position:absolute;border-radius:50%;background:rgba(255,255,255,.65);transform:scale(0);animation:rp .6s linear;pointer-events:none}
+@keyframes rp{to{transform:scale(4);opacity:0}}
+input,select{font:inherit;padding:9px 11px;border:1px solid var(--line);border-radius:11px;background:#fffafc;color:var(--text);width:100%;transition:.2s}
+input:focus,select:focus{outline:0;border-color:var(--pri);box-shadow:0 0 0 3px rgba(244,143,177,.25)}
+label{font-size:13px;color:var(--muted);display:block;margin-bottom:4px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px}
+.bar{display:flex;gap:10px;flex-wrap:wrap;align-items:end;margin-bottom:14px}.bar>div{min-width:150px}
+.tw{overflow-x:auto}table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{background:var(--pri);color:#fff;padding:9px;white-space:nowrap;text-align:left}th:first-child{border-radius:10px 0 0 0}th:last-child{border-radius:0 10px 0 0}
+td{padding:8px;border-bottom:1px solid var(--line);white-space:nowrap}
+tbody tr{animation:rise .4s both;transition:.15s}tbody tr:hover td{background:var(--soft)}
+.ph{width:40px;height:50px;object-fit:cover;border-radius:8px;background:var(--soft);transition:.25s;cursor:zoom-in}.ph:hover{transform:scale(2.6);position:relative;z-index:3;box-shadow:var(--shadow)}
+.stat{display:flex;gap:14px;flex-wrap:wrap}
+.stat div{flex:1;min-width:130px;background:linear-gradient(135deg,var(--soft),#fff);border:1px solid var(--line);border-radius:16px;padding:16px;text-align:center;transition:.25s}
+.stat div:hover{transform:translateY(-5px) rotate(-1deg);box-shadow:var(--shadow)}
+.stat b{display:block;font-size:30px;color:var(--pri-d)}
+.modal{position:fixed;inset:0;background:rgba(120,50,80,.35);backdrop-filter:blur(3px);display:flex;align-items:flex-start;justify-content:center;overflow:auto;padding:24px 12px;z-index:20;animation:fade .25s}
+.box{background:var(--card);border-radius:20px;padding:20px;width:100%;max-width:780px;animation:pop .3s cubic-bezier(.2,1.4,.4,1)}
+@keyframes fade{from{opacity:0}}@keyframes pop{from{transform:scale(.85);opacity:0}}
+.note{font-size:13px;color:var(--muted)}.err{color:#d6456f;font-size:13px;margin-top:6px}
+.badge{background:rgba(255,255,255,.85);color:var(--pri-d);padding:3px 11px;border-radius:99px;font-size:12px}
+#toast{position:fixed;bottom:22px;left:50%;transform:translate(-50%,90px);background:var(--pri-d);color:#fff;padding:10px 20px;border-radius:99px;box-shadow:var(--shadow);transition:.4s;z-index:50}
+#toast.show{transform:translate(-50%,0)}
+.fl{position:fixed;top:-40px;pointer-events:none;z-index:1;opacity:.55;animation:fall linear infinite}
+.cf{position:fixed;top:-30px;pointer-events:none;z-index:60;animation:fall 2.4s ease-in forwards}
+@keyframes fall{to{transform:translateY(110vh) rotate(360deg)}}
+</style>
+</head>
+<body>
+<header>
+  <h1>🌸 ລະບົບບໍລິຫານວິທະຍາໄລ</h1>
+  <span class="badge" id="status">ກຳລັງເຊື່ອມຕໍ່...</span>
+  <button class="btn" id="loginBtn"></button>
+</header>
+<div class="layout"><nav id="nav"></nav><main id="main"></main></div>
+<div id="modal"></div><div id="toast"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<script>
+/* ===== 1) ໃສ່ຄ່າຈາກ Supabase ໂປຣເຈັກຂອງທ່ານ (Project Settings > API) ===== */
+const SUPABASE_URL = "https://shrkdsmzaovytogdvvtz.supabase.co";
+const SUPABASE_ANON_KEY = "sb_publishable_gfCKnqUJHMt1b0BCS30Gcw_lSxljTzb";
+const BUCKET = "student-photos";
+/* ===== 2) ເມນູ: ເພີ່ມເມນູໃໝ່ໄດ້ທີ່ນີ້ ===== */
+const MENU = [
+  {id:"home", label:"🏠 ໜ້າຫຼັກ", render:renderHome},
+  {id:"years",label:"📅 ສົກຮຽນ", render:renderYears},
+  {id:"stu",  label:"🧑‍🎓 ປະຫວັດນັກສຶກສາ", render:renderStudents},
+  {id:"rep",  label:"📊 ລາຍງານ / Excel", render:renderReport},
+  // {id:"new", label:"➕ ເມນູໃໝ່", render:renderNew},
+];
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const LAO_M=["ມັງກອນ","ກຸມພາ","ມີນາ","ເມສາ","ພຶດສະພາ","ມິຖຸນາ","ກໍລະກົດ","ສິງຫາ","ກັນຍາ","ຕຸລາ","ພະຈິກ","ທັນວາ"];
+const EN_M=["January","February","March","April","May","June","July","August","September","October","November","December"];
+const S={years:[],students:[],admin:false,page:"home",fy:"",q:""};
+const $=s=>document.querySelector(s), pad=n=>String(n).padStart(2,"0");
+const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const yname=id=>(S.years.find(y=>y.id===id)||{}).label||"";
+const nameLo=s=>`${s.first_name_lo||""} ${s.last_name_lo||""}`.trim();
+const nameEn=s=>`${s.first_name_en||""} ${s.last_name_en||""}`.trim();
+
+/* ---------- ເອັບເຟັກ JavaScript ---------- */
+function toast(t){const e=$("#toast");e.textContent=t;e.classList.add("show");clearTimeout(toast.t);toast.t=setTimeout(()=>e.classList.remove("show"),2600)}
+function confetti(){const em=["💗","🌸","✨","🎀","💮"];for(let i=0;i<28;i++){const s=document.createElement("span");s.className="cf";s.textContent=em[i%5];
+  s.style.cssText=`left:${Math.random()*100}vw;font-size:${14+Math.random()*16}px;animation-delay:${Math.random()*.6}s`;document.body.appendChild(s);setTimeout(()=>s.remove(),3200)}}
+function petals(){for(let i=0;i<12;i++){const s=document.createElement("span");s.className="fl";s.textContent="🌸";
+  s.style.cssText=`left:${Math.random()*100}vw;font-size:${12+Math.random()*14}px;animation-duration:${14+Math.random()*14}s;animation-delay:${-Math.random()*20}s`;document.body.appendChild(s)}}
+function countUp(){document.querySelectorAll("[data-n]").forEach(el=>{const n=+el.dataset.n;let t0=null;
+  const f=t=>{t0??=t;const p=Math.min((t-t0)/900,1);el.textContent=Math.round(n*(1-Math.pow(1-p,3)));if(p<1)requestAnimationFrame(f)};requestAnimationFrame(f)})}
+document.addEventListener("click",e=>{const b=e.target.closest(".btn");if(!b)return;const r=document.createElement("span"),d=Math.max(b.clientWidth,b.clientHeight),k=b.getBoundingClientRect();
+  r.className="rip";r.style.cssText=`width:${d}px;height:${d}px;left:${e.clientX-k.left-d/2}px;top:${e.clientY-k.top-d/2}px`;b.appendChild(r);setTimeout(()=>r.remove(),600)});
+function stagger(){document.querySelectorAll("tbody tr").forEach((r,i)=>r.style.animationDelay=Math.min(i*30,600)+"ms")}
+
+/* ---------- ໂຫຼດຂໍ້ມູນ + realtime ---------- */
+async function load(){
+  const [y,s]=await Promise.all([sb.from("academic_years").select("*").order("id"),sb.from("students").select("*").order("first_name_lo")]);
+  if(y.error||s.error){$("#status").textContent="⚠️ ເຊື່ອມຕໍ່ບໍ່ໄດ້";console.error(y.error||s.error);return}
+  S.years=y.data;S.students=s.data;$("#status").textContent="🟢 ອອນລາຍ";renderAll();
+}
+async function init(){
+  const {data}=await sb.auth.getSession();S.admin=!!data.session;
+  sb.auth.onAuthStateChange((_,ses)=>{S.admin=!!ses;renderAll()});
+  petals();await load();
+  sb.channel("live").on("postgres_changes",{event:"*",schema:"public"},load).subscribe();
+}
+
+/* ---------- ເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ (Supabase Auth) ---------- */
+function modal(h){$("#modal").innerHTML=h?`<div class="modal"><div class="box">${h}</div></div>`:""}
+function loginForm(){
+  modal(`<h2>🔐 ເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ</h2><div class="grid"><div><label>ອີເມວ</label><input id="le_m" type="email" autocomplete="username"></div>
+  <div><label>ລະຫັດຜ່ານ</label><input id="le_p" type="password" autocomplete="current-password"></div></div><div class="err" id="le"></div>
+  <p><button class="btn" id="go">ເຂົ້າສູ່ລະບົບ</button> <button class="btn alt" onclick="modal()">ຍົກເລີກ</button></p>`);
+  const go=async()=>{const {error}=await sb.auth.signInWithPassword({email:$("#le_m").value.trim(),password:$("#le_p").value});
+    if(error)$("#le").textContent="ເຂົ້າສູ່ລະບົບບໍ່ໄດ້: "+error.message;else{modal();toast("ຍິນດີຕ້ອນຮັບຜູ້ບໍລິຫານ 💗")}};
+  $("#go").onclick=go;$("#le_p").addEventListener("keydown",e=>{if(e.key==="Enter")go()});
+}
+$("#loginBtn").onclick=async()=>{if(S.admin){await sb.auth.signOut();toast("ອອກຈາກລະບົບແລ້ວ")}else loginForm()};
+const guard=()=>{if(!S.admin){loginForm();return false}return true};
+async function run(p,ok){const {error}=await p;if(error){alert("ຜິດພາດ: "+error.message);return false}if(ok){toast(ok);confetti()}return true}
+
+function renderAll(){
+  $("#loginBtn").textContent=S.admin?"ອອກຈາກລະບົບ":"🔐 ເຂົ້າສູ່ລະບົບ";
+  $("#nav").innerHTML=MENU.map(m=>`<button class="${m.id===S.page?"on":""}" data-p="${m.id}">${m.label}</button>`).join("");
+  $("#nav").querySelectorAll("button").forEach(b=>b.onclick=()=>{S.page=b.dataset.p;renderAll()});
+  (MENU.find(m=>m.id===S.page)||MENU[0]).render($("#main"));stagger();countUp();
+}
+const yearSel=(id,v,all)=>`<select id="${id}">${all?'<option value="">— ທຸກສົກຮຽນ —</option>':""}${S.years.map(y=>`<option value="${y.id}" ${String(y.id)===String(v)?"selected":""}>${esc(y.label)}</option>`).join("")}</select>`;
+function filtered(){const q=S.q.toLowerCase();return S.students.filter(s=>(!S.fy||String(s.academic_year_id)===S.fy)&&(!q||Object.values(s).join(" ").toLowerCase().includes(q)))}
+
+/* ---------- ໜ້າຫຼັກ ---------- */
+function renderHome(m){const f=S.students.filter(s=>s.gender==="ຍິງ").length;
+  m.innerHTML=`<div class="card"><h2>ຍິນດີຕ້ອນຮັບ 🌷</h2><div class="stat"><div><b data-n="${S.years.length}">0</b>ສົກຮຽນ</div><div><b data-n="${S.students.length}">0</b>ນັກສຶກສາທັງໝົດ</div><div><b data-n="${f}">0</b>ຍິງ</div><div><b data-n="${S.students.length-f}">0</b>ຊາຍ</div></div>
+  <p class="note">ທຸກຄົນເບິ່ງຂໍ້ມູນໄດ້ ແຕ່ການເພີ່ມ / ແກ້ໄຂ / ລົບ ຕ້ອງເຂົ້າສູ່ລະບົບຜູ້ບໍລິຫານ.</p></div>`}
+
+/* ---------- ສົກຮຽນ ---------- */
+function renderYears(m){
+  m.innerHTML=`<div class="card"><h2>ຕາຕະລາງສົກຮຽນ</h2>${S.admin?`<div class="bar"><div><label>ສົກຮຽນໃໝ່ (ຕົວຢ່າງ 2026-2027)</label><input id="yl"></div><button class="btn" id="ya">+ ເພີ່ມ</button></div>`:""}
+  <div class="tw"><table><thead><tr><th>ລ/ດ</th><th>ສົກຮຽນ</th>${S.admin?"<th></th>":""}</tr></thead><tbody>
+  ${S.years.map((y,i)=>`<tr><td>${i+1}</td><td>${esc(y.label)}</td>${S.admin?`<td><button class="btn sm alt" data-e="${y.id}">ແກ້ໄຂ</button> <button class="btn sm del" data-d="${y.id}">ລົບ</button></td>`:""}</tr>`).join("")||'<tr><td colspan="3">ຍັງບໍ່ມີຂໍ້ມູນ</td></tr>'}</tbody></table></div></div>`;
+  if(!S.admin)return;
+  $("#ya").onclick=async()=>{const l=$("#yl").value.trim();if(!/^\d{4}-\d{4}$/.test(l))return alert("ຮູບແບບ: 2026-2027");if(await run(sb.from("academic_years").insert({label:l}),"ເພີ່ມສົກຮຽນແລ້ວ"))load()};
+  m.querySelectorAll("[data-e]").forEach(b=>b.onclick=async()=>{const y=S.years.find(x=>String(x.id)===b.dataset.e),l=prompt("ແກ້ໄຂສົກຮຽນ",y.label);if(l&&/^\d{4}-\d{4}$/.test(l.trim())&&await run(sb.from("academic_years").update({label:l.trim()}).eq("id",y.id),"ແກ້ໄຂແລ້ວ"))load()});
+  m.querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{if(confirm("ລົບສົກຮຽນນີ້?")&&await run(sb.from("academic_years").delete().eq("id",b.dataset.d),"ລົບແລ້ວ"))load()});
+}
+
+/* ---------- ນັກສຶກສາ ---------- */
+function renderStudents(m){
+  m.innerHTML=`<div class="card"><h2>ປະຫວັດນັກສຶກສາ</h2><div class="bar"><div><label>ສົກຮຽນ</label>${yearSel("fy",S.fy,true)}</div>
+  <div style="flex:1"><label>ຄົ້ນຫາ</label><input id="fq" value="${esc(S.q)}" placeholder="ຊື່, ເບີໂທ, ແຂວງ..."></div>${S.admin?'<button class="btn" id="add">+ ເພີ່ມນັກສຶກສາ</button>':""}</div><div class="tw" id="tb"></div></div>`;
+  const draw=()=>{$("#tb").innerHTML=table(true);stagger();
+    $("#tb").querySelectorAll("[data-e]").forEach(b=>b.onclick=()=>studentForm(b.dataset.e));
+    $("#tb").querySelectorAll("[data-d]").forEach(b=>b.onclick=async()=>{if(confirm("ລົບນັກສຶກສາຄົນນີ້?")&&await run(sb.from("students").delete().eq("id",b.dataset.d),"ລົບແລ້ວ"))load()})};
+  $("#fy").onchange=e=>{S.fy=e.target.value;draw()};$("#fq").oninput=e=>{S.q=e.target.value;draw()};
+  if(S.admin)$("#add").onclick=()=>studentForm();draw();
+}
+function table(act){const rows=filtered();
+  return `<table><thead><tr><th>ລ/ດ</th><th>ຮູບ</th><th>ສົກຮຽນ</th><th>ຊື່-ນາມສະກຸນ (ລາວ)</th><th>Name (EN)</th><th>ເພດ</th><th>ວັນເກີດ (ລາວ)</th><th>Date of birth (EN)</th><th>ບ້ານ</th><th>ເມືອງ</th><th>ແຂວງ</th><th>ຈົບ ມ.7 ຈາກ</th><th>ເບີໂທ</th><th>ເບີພໍ່</th><th>ເບີແມ່</th><th>ເບີສຸກເສີນ</th>${act&&S.admin?"<th></th>":""}</tr></thead><tbody>
+  ${rows.map((s,i)=>`<tr><td>${i+1}</td><td>${s.photo_url?`<img class="ph" src="${esc(s.photo_url)}">`:"—"}</td><td>${esc(yname(s.academic_year_id))}</td><td>${esc(nameLo(s))}</td><td>${esc(nameEn(s))}</td><td>${esc(s.gender)}</td><td>${esc(s.dob_lo)}</td><td>${esc(s.dob_en)}</td><td>${esc(s.birth_village)}</td><td>${esc(s.birth_district)}</td><td>${esc(s.birth_province)}</td><td>${esc(s.high_school)}</td><td>${esc(s.phone)}</td><td>${esc(s.phone_father)}</td><td>${esc(s.phone_mother)}</td><td>${esc(s.phone_emergency)}</td>${act&&S.admin?`<td><button class="btn sm alt" data-e="${s.id}">ແກ້ໄຂ</button> <button class="btn sm del" data-d="${s.id}">ລົບ</button></td>`:""}</tr>`).join("")||'<tr><td colspan="17">ບໍ່ພົບຂໍ້ມູນ</td></tr>'}</tbody></table>`}
+function studentForm(id){
+  if(!guard())return;if(!S.years.length)return alert("ກະລຸນາເພີ່ມສົກຮຽນກ່ອນ");
+  const s=S.students.find(x=>String(x.id)===String(id))||{academic_year_id:S.fy||S.years[S.years.length-1].id,gender:"ຊາຍ"};
+  let blob=null;
+  const f=(k,l,t)=>`<div><label>${l}</label><input id="f_${k}" type="${t||"text"}" value="${esc(s[k])}"></div>`;
+  modal(`<h2>${id?"ແກ້ໄຂ":"ເພີ່ມ"}ປະຫວັດນັກສຶກສາ</h2><div class="grid">
+  <div><label>ເລືອກສົກຮຽນ</label>${yearSel("f_academic_year_id",s.academic_year_id)}</div>
+  <div><label>ຮູບພາບ</label><input id="f_ph" type="file" accept="image/*"><img id="pv" class="ph" style="margin-top:6px;${s.photo_url?"":"display:none"}" src="${esc(s.photo_url||"")}"></div>
+  ${f("first_name_lo","ຊື່ (ລາວ)")}${f("last_name_lo","ນາມສະກຸນ (ລາວ)")}${f("first_name_en","First name (EN)")}${f("last_name_en","Last name (EN)")}
+  <div><label>ເພດ</label><select id="f_gender"><option ${s.gender==="ຊາຍ"?"selected":""}>ຊາຍ</option><option ${s.gender==="ຍິງ"?"selected":""}>ຍິງ</option></select></div>
+  <div><label>ວັນເດືອນປີເກີດ</label><input id="f_dob" type="date" value="${esc(s.dob)}"></div>
+  <div><label>ວັນເກີດ (ລາວ) — ອັດຕະໂນມັດ</label><input id="f_dl" value="${esc(s.dob_lo)}" readonly></div>
+  <div><label>Date of birth (EN) — auto</label><input id="f_de" value="${esc(s.dob_en)}" readonly></div>
+  ${f("birth_village","ບ້ານເກີດ")}${f("birth_district","ເມືອງ")}${f("birth_province","ແຂວງ")}${f("high_school","ຮຽນຈົບ ມ.7 ຈາກ ມ.ສ")}
+  ${f("phone","ເບີໂທ","tel")}${f("phone_father","ເບີໂທພໍ່","tel")}${f("phone_mother","ເບີໂທແມ່","tel")}${f("phone_emergency","ເບີໂທສຸກເສີນ","tel")}</div>
+  <div class="err" id="le"></div><p><button class="btn" id="sv">💾 ບັນທຶກ</button> <button class="btn alt" onclick="modal()">ຍົກເລີກ</button></p>`);
+  $("#f_dob").onchange=e=>{const [y,m,d]=e.target.value.split("-").map(Number);if(!y)return;$("#f_dl").value=`${pad(d)} ${LAO_M[m-1]} ${y}`;$("#f_de").value=`${pad(d)} ${EN_M[m-1]} ${y}`};
+  $("#f_ph").onchange=e=>{const file=e.target.files[0];if(!file)return;const img=new Image();img.onload=()=>{const c=document.createElement("canvas");c.width=300;c.height=375;const x=c.getContext("2d");
+    const r=Math.max(300/img.width,375/img.height),w=img.width*r,h=img.height*r;x.drawImage(img,(300-w)/2,(375-h)/2,w,h);
+    c.toBlob(b=>{blob=b;$("#pv").src=URL.createObjectURL(b);$("#pv").style.display=""},"image/jpeg",.82)};img.src=URL.createObjectURL(file)};
+  $("#sv").onclick=async()=>{
+    const d={academic_year_id:+$("#f_academic_year_id").value,gender:$("#f_gender").value,dob:$("#f_dob").value||null};
+    ["first_name_lo","last_name_lo","first_name_en","last_name_en","birth_village","birth_district","birth_province","high_school","phone","phone_father","phone_mother","phone_emergency"].forEach(k=>d[k]=$("#f_"+k).value.trim());
+    if(!d.first_name_lo){$("#le").textContent="ກະລຸນາໃສ່ຊື່ (ລາວ)";return}
+    $("#sv").disabled=true;
+    if(blob){const path=`${Date.now()}_${Math.random().toString(36).slice(2,8)}.jpg`;
+      const up=await sb.storage.from(BUCKET).upload(path,blob,{contentType:"image/jpeg"});
+      if(up.error){$("#le").textContent="ອັບໂຫຼດຮູບບໍ່ໄດ້: "+up.error.message;$("#sv").disabled=false;return}
+      d.photo_url=sb.storage.from(BUCKET).getPublicUrl(path).data.publicUrl}
+    const ok=await run(id?sb.from("students").update(d).eq("id",id):sb.from("students").insert(d),"ບັນທຶກສຳເລັດ 🎉");
+    $("#sv").disabled=false;if(ok){modal();load()}};
+}
+
+/* ---------- ລາຍງານ + Excel (.xlsx) ---------- */
+function renderReport(m){
+  m.innerHTML=`<div class="card"><h2>ລາຍງານປະຫວັດນັກສຶກສາ</h2><div class="bar"><div><label>ສົກຮຽນ</label>${yearSel("fy",S.fy,true)}</div>
+  <button class="btn" id="xl">📥 ສົ່ງອອກ Excel</button><button class="btn alt" onclick="print()">🖨️ ພິມ</button></div><div class="note" id="cnt"></div><div class="tw" id="tb"></div></div>`;
+  const draw=()=>{$("#tb").innerHTML=table(false);stagger();$("#cnt").textContent="ທັງໝົດ "+filtered().length+" ຄົນ"};
+  $("#fy").onchange=e=>{S.fy=e.target.value;draw()};draw();
+  $("#xl").onclick=()=>{
+    const H=["ລ/ດ","ສົກຮຽນ","ຊື່ (ລາວ)","ນາມສະກຸນ (ລາວ)","First name","Last name","ເພດ","ວັນເກີດ (ລາວ)","Date of birth","ບ້ານ","ເມືອງ","ແຂວງ","ຈົບ ມ.7 ຈາກ","ເບີໂທ","ເບີພໍ່","ເບີແມ່","ເບີສຸກເສີນ","ລິ້ງຮູບ"];
+    const rows=filtered().map((s,i)=>[i+1,yname(s.academic_year_id),s.first_name_lo,s.last_name_lo,s.first_name_en,s.last_name_en,s.gender,s.dob_lo,s.dob_en,s.birth_village,s.birth_district,s.birth_province,s.high_school,s.phone,s.phone_father,s.phone_mother,s.phone_emergency,s.photo_url]);
+    const ws=XLSX.utils.aoa_to_sheet([H,...rows]);ws["!cols"]=H.map(()=>({wch:18}));
+    const wb=XLSX.utils.book_new();XLSX.utils.book_append_sheet(wb,ws,"Students");
+    XLSX.writeFile(wb,`students_${yname(S.fy)||"all"}.xlsx`);toast("ສົ່ງອອກ Excel ແລ້ວ 📊");confetti()};
+}
+init();
+</script>
+</body>
+</html>
